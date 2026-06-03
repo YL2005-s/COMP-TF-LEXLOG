@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LEXLOG — Procesador DSL Logístico</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #58a6ff;
+      letter-spacing: 2px;
+    }
+    .logo span { color: #3fb950; }
+    .subtitle {
+      font-size: 0.75rem;
+      color: #8b949e;
+      letter-spacing: 1px;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+      gap: 1.5rem;
+    }
+
+    /* ── PANEL IZQUIERDO ── */
+    .panel-input {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .panel-title {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: #8b949e;
+      text-transform: uppercase;
+    }
+
+    textarea {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: #c9d1d9;
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      padding: 1rem;
+      resize: vertical;
+      min-height: 120px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    textarea:focus { border-color: #58a6ff; }
+    textarea::placeholder { color: #484f58; }
+
+    .btn-procesar {
+      background: #238636;
+      border: 1px solid #2ea043;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 0.75rem 1.5rem;
+      transition: background 0.2s;
+    }
+    .btn-procesar:hover { background: #2ea043; }
+    .btn-procesar:disabled { background: #21262d; color: #484f58; cursor: not-allowed; }
+
+    /* Ejemplos */
+    .ejemplos-title {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: #8b949e;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+    .ejemplos {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .ejemplo-btn {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #8b949e;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .ejemplo-btn:hover { border-color: #58a6ff; color: #58a6ff; }
+
+    /* ── PANEL DERECHO ── */
+    .panel-resultado {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .fase-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .fase-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #30363d;
+    }
+    .fase-numero {
+      background: #21262d;
+      border-radius: 50%;
+      color: #8b949e;
+      font-size: 0.7rem;
+      font-weight: bold;
+      height: 24px;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fase-nombre {
+      font-size: 0.8rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .fase-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+    .badge-espera  { background: #21262d; color: #8b949e; }
+    .badge-ok      { background: #1a4731; color: #3fb950; }
+    .badge-error   { background: #4d1e1e; color: #f85149; }
+    .badge-skip    { background: #21262d; color: #484f58; }
+
+    .fase-body { padding: 0.75rem 1rem; min-height: 60px; }
+
+    /* Tokens */
+    .tokens-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .token-chip {
+      border-radius: 4px;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.5rem;
+    }
+    .t-COMANDO      { background: #1f3a5f; color: #79c0ff; }
+    .t-KEYWORD      { background: #2d2a1e; color: #e3b341; }
+    .t-IDENTIFICADOR{ background: #1c2d1e; color: #56d364; }
+    .t-VALOR        { background: #1e2535; color: #a5b4fc; }
+    .t-NIVEL        { background: #2d1e2d; color: #d2a8ff; }
+    .t-NUMERO       { background: #2d1e1e; color: #ffa657; }
+    .t-DESCONOCIDO  { background: #4d1e1e; color: #f85149; }
+
+    /* Errores */
+    .error-msg {
+      color: #f85149;
+      font-size: 0.8rem;
+      padding: 0.3rem 0;
+    }
+
+    /* Resultado final */
+    .resultado-final {
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      padding: 1rem;
+      text-align: center;
+    }
+    .resultado-ok    { background: #1a4731; border: 1px solid #2ea043; color: #3fb950; }
+    .resultado-error { background: #4d1e1e; border: 1px solid #f85149; color: #f85149; }
+    .resultado-espera{ background: #21262d; border: 1px solid #30363d; color: #484f58; }
+
+    /* Loading */
+    .loading { color: #8b949e; font-size: 0.8rem; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">LEX<span>LOG</span></div>
+    <div class="subtitle">Procesador DSL Logístico · Análisis Léxico · Sintáctico · Semántico</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── PANEL IZQUIERDO ── -->
+  <div class="panel-input">
+    <div class="panel-title">Instrucción operativa</div>
+
+    <textarea id="instruccion"
+      placeholder="Escribe una instrucción logística...&#10;&#10;Ej: DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta"
+      rows="5"></textarea>
+
+    <button class="btn-procesar" id="btn-procesar" onclick="procesar()">
+      ▶ PROCESAR INSTRUCCIÓN
+    </button>
+
+    <div class="ejemplos-title">Ejemplos de instrucciones</div>
+    <div class="ejemplos">
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta</button>
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">TRANSFERIR lote-01 DE almacen-A HACIA almacen-B</button>
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">VALIDAR stock producto-01 CANTIDAD 500</button>
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">CANCELAR pedido-005 MOTIVO dañado</button>
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">CONSULTAR pedido-010</button>
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPAXHAR pedido-001 DESTINO Lima PRIORIDAD alta</button>
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 Lima PRIORIDAD alta</button>
+      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 DESTINO Marte PRIORIDAD alta</button>
+    </div>
+  </div>
+
+  <!-- ── PANEL DERECHO ── -->
+  <div class="panel-resultado">
+
+    <div class="panel-title">Resultado del análisis</div>
+
+    <!-- Fase 1: Léxico -->
+    <div class="fase-card">
+      <div class="fase-header">
+        <div class="fase-numero">1</div>
+        <div class="fase-nombre" style="color:#79c0ff">Análisis Léxico</div>
+        <div class="fase-badge badge-espera" id="badge-lexico">EN ESPERA</div>
+      </div>
+      <div class="fase-body" id="body-lexico">
+        <span style="color:#484f58;font-size:0.8rem">Ingresa una instrucción para comenzar...</span>
+      </div>
+    </div>
+
+    <!-- Fase 2: Sintáctico -->
+    <div class="fase-card">
+      <div class="fase-header">
+        <div class="fase-numero">2</div>
+        <div class="fase-nombre" style="color:#e3b341">Análisis Sintáctico</div>
+        <div class="fase-badge badge-espera" id="badge-sintactico">EN ESPERA</div>
+      </div>
+      <div class="fase-body" id="body-sintactico">
+        <span style="color:#484f58;font-size:0.8rem">Esperando fase léxica...</span>
+      </div>
+    </div>
+
+    <!-- Fase 3: Semántico -->
+    <div class="fase-card">
+      <div class="fase-header">
+        <div class="fase-numero">3</div>
+        <div class="fase-nombre" style="color:#d2a8ff">Análisis Semántico</div>
+        <div class="fase-badge badge-espera" id="badge-semantico">EN ESPERA</div>
+      </div>
+      <div class="fase-body" id="body-semantico">
+        <span style="color:#484f58;font-size:0.8rem">Esperando fases anteriores...</span>
+      </div>
+    </div>
+
+    <!-- Resultado final -->
+    <div class="resultado-final resultado-espera" id="resultado-final">
+      Ingresa una instrucción logística para analizar
+    </div>
+
+  </div>
+</main>
+
+<script>
+  function cargarEjemplo(btn) {
+    document.getElementById('instruccion').value = btn.textContent.trim();
+  }
+
+  async function procesar() {
+    const instruccion = document.getElementById('instruccion').value.trim();
+    if (!instruccion) return;
+
+    const btn = document.getElementById('btn-procesar');
+    btn.disabled = true;
+    btn.textContent = '⏳ Procesando...';
+
+    resetUI();
+
+    try {
+      const res  = await fetch('/procesar', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ instruccion })
+      });
+      const data = await res.json();
+      renderResultado(data);
+    } catch(e) {
+      document.getElementById('resultado-final').textContent = '❌ Error de conexión';
+      document.getElementById('resultado-final').className = 'resultado-final resultado-error';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '▶ PROCESAR INSTRUCCIÓN';
+    }
+  }
+
+  function resetUI() {
+    ['lexico','sintactico','semantico'].forEach(f => {
+      document.getElementById(`badge-${f}`).className    = 'fase-badge badge-espera';
+      document.getElementById(`badge-${f}`).textContent  = 'EN ESPERA';
+    });
+    document.getElementById('body-lexico').innerHTML     = '<span class="loading">Analizando tokens...</span>';
+    document.getElementById('body-sintactico').innerHTML = '<span style="color:#484f58;font-size:0.8rem">Esperando fase léxica...</span>';
+    document.getElementById('body-semantico').innerHTML  = '<span style="color:#484f58;font-size:0.8rem">Esperando fases anteriores...</span>';
+    document.getElementById('resultado-final').className = 'resultado-final resultado-espera';
+    document.getElementById('resultado-final').textContent = 'Procesando...';
+  }
+
+  function renderResultado(data) {
+    const fases = data.fases || {};
+
+    // ── LÉXICO ──
+    if (fases.lexico) {
+      const l = fases.lexico;
+      const badge = document.getElementById('badge-lexico');
+      badge.className   = `fase-badge ${l.valido ? 'badge-ok' : 'badge-error'}`;
+      badge.textContent = l.valido ? '✓ VÁLIDO' : '✗ ERROR';
+
+      let html = '';
+      if (l.tokens && l.tokens.length) {
+        html += '<div class="tokens-grid">';
+        l.tokens.forEach(t => {
+          html += `<span class="token-chip t-${t.tipo}" title="${t.tipo}">${t.valor}</span>`;
+        });
+        html += '</div>';
+      }
+      if (l.errores && l.errores.length) {
+        l.errores.forEach(e => { html += `<div class="error-msg">⚠ ${e}</div>`; });
+      }
+      document.getElementById('body-lexico').innerHTML = html;
+    }
+
+    // ── SINTÁCTICO ──
+    if (fases.sintactico) {
+      const s = fases.sintactico;
+      const badge = document.getElementById('badge-sintactico');
+      badge.className   = `fase-badge ${s.valido ? 'badge-ok' : 'badge-error'}`;
+      badge.textContent = s.valido ? '✓ VÁLIDO' : '✗ ERROR';
+
+      let html = '';
+      if (s.valido) {
+        html = '<span style="color:#3fb950;font-size:0.8rem">✓ Estructura gramatical correcta</span>';
+      } else {
+        s.errores.forEach(e => { html += `<div class="error-msg">⚠ ${e}</div>`; });
+      }
+      document.getElementById('body-sintactico').innerHTML = html;
+    } else if (data.fase_fallo === 'léxico') {
+      document.getElementById('badge-sintactico').className   = 'fase-badge badge-skip';
+      document.getElementById('badge-sintactico').textContent = '— OMITIDO';
+      document.getElementById('body-sintactico').innerHTML    =
+        '<span style="color:#484f58;font-size:0.8rem">No ejecutado por error en fase léxica</span>';
+    }
+
+    // ── SEMÁNTICO ──
+    if (fases.semantico) {
+      const s = fases.semantico;
+      const badge = document.getElementById('badge-semantico');
+      badge.className   = `fase-badge ${s.valido ? 'badge-ok' : 'badge-error'}`;
+      badge.textContent = s.valido ? '✓ VÁLIDO' : '✗ ERROR';
+
+      let html = '';
+      if (s.valido) {
+        html = '<span style="color:#3fb950;font-size:0.8rem">✓ Significado lógicamente correcto</span>';
+      } else {
+        s.errores.forEach(e => { html += `<div class="error-msg">⚠ ${e}</div>`; });
+      }
+      document.getElementById('body-semantico').innerHTML = html;
+    } else if (['léxico','sintáctico'].includes(data.fase_fallo)) {
+      document.getElementById('badge-semantico').className   = 'fase-badge badge-skip';
+      document.getElementById('badge-semantico').textContent = '— OMITIDO';
+      document.getElementById('body-semantico').innerHTML    =
+        '<span style="color:#484f58;font-size:0.8rem">No ejecutado por error en fase anterior</span>';
+    }
+
+    // ── RESULTADO FINAL ──
+    const rf = document.getElementById('resultado-final');
+    if (data.valido) {
+      rf.className   = 'resultado-final resultado-ok';
+      rf.textContent = '✅ Instrucción válida — Procesada correctamente';
+    } else {
+      rf.className   = 'resultado-final resultado-error';
+      rf.textContent = `❌ Instrucción rechazada — Error en fase ${data.fase_fallo}`;
+    }
+  }
+
+  // Enter para procesar
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('instruccion').addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') procesar();
+    });
+  });
+</script>
+
+</body>
+</html>
