@@ -217,6 +217,201 @@
     .loading { color: #8b949e; font-size: 0.8rem; animation: pulse 1s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
+    /* ── TABLA DE TOKENS ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .token-table-wrapper { animation: fadeIn 0.35s ease; }
+
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+    .token-table th {
+      color: #8b949e;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      text-transform: uppercase;
+      border-bottom: 1px solid #30363d;
+    }
+    .token-table td {
+      padding: 0.45rem 0.75rem;
+      border-bottom: 1px solid #21262d;
+    }
+    .token-table tbody tr:last-child td { border-bottom: none; }
+
+    .tr-COMANDO       { color: #79c0ff; }
+    .tr-KEYWORD       { color: #e3b341; }
+    .tr-IDENTIFICADOR { color: #56d364; }
+    .tr-VALOR         { color: #a5b4fc; }
+    .tr-NIVEL         { color: #d2a8ff; }
+    .tr-NUMERO        { color: #ffa657; }
+    .tr-DESCONOCIDO   { color: #f85149; }
+
+    /* ── ÁRBOL SINTÁCTICO ── */
+    .arbol-wrapper {
+      grid-column: 1 / -1;
+      animation: fadeIn 0.4s ease;
+    }
+    .arbol-svg-box {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 1.5rem 1rem;
+    }
+
+    /* ── HISTORIAL ── */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .historial-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .historial-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .historial-vacio {
+      color: #484f58;
+      font-size: 0.78rem;
+      padding: 0.4rem 0;
+    }
+    .historial-item {
+      border-left: 3px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 0.45rem 0.6rem;
+      transition: filter 0.15s;
+      animation: slideIn 0.3s ease;
+    }
+    .historial-item:hover { filter: brightness(1.35); }
+    .historial-ok    { background: rgba(26,71,49,0.3);  border-left-color: #3fb950; }
+    .historial-error { background: rgba(77,30,30,0.3);  border-left-color: #f85149; }
+    .historial-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .historial-item-text { color: #c9d1d9; flex: 1; }
+    .historial-item-hora { color: #484f58; font-size: 0.68rem; white-space: nowrap; padding-top: 1px; }
+    .btn-limpiar {
+      align-self: flex-end;
+      background: none;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      color: #484f58;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      padding: 0.25rem 0.5rem;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .btn-limpiar:hover { border-color: #f85149; color: #f85149; }
+
+    /* ── MODO TOGGLE ── */
+    .modo-toggle {
+      display: flex;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .toggle-btn {
+      background: none;
+      border: none;
+      border-radius: 6px;
+      color: #8b949e;
+      cursor: pointer;
+      flex: 1;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      padding: 0.4rem 0.75rem;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .toggle-btn:hover:not(.active) { color: #c9d1d9; }
+    .toggle-btn.active { background: #30363d; color: #58a6ff; }
+
+    /* ── MODO INDIVIDUAL / LOTE (wrappers de input) ── */
+    #modo-individual, #modo-lote {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* ── PANEL LOTE (resultado) ── */
+    #panel-lote {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .lote-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+    .lote-table th {
+      color: #8b949e;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      text-transform: uppercase;
+      border-bottom: 1px solid #30363d;
+    }
+    .lote-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .lote-table tbody tr:last-child td { border-bottom: none; }
+    .lote-row { cursor: pointer; transition: filter 0.15s; }
+    .lote-row:hover { filter: brightness(1.25); }
+    .lote-row-valida   { background: #1a4731; }
+    .lote-row-valida   td { color: #3fb950; }
+    .lote-row-invalida { background: #4d1e1e; }
+    .lote-row-invalida td { color: #f85149; }
+    .lote-badge { border-radius: 20px; font-size: 0.7rem; padding: 0.15rem 0.5rem; }
+    .lote-badge-valida   { background: rgba(63,185,80,0.15);  color: #3fb950; }
+    .lote-badge-invalida { background: rgba(248,81,73,0.15); color: #f85149; }
+    .lote-detalle-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+    .lote-detalle-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #30363d;
+      font-size: 0.78rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      word-break: break-all;
+    }
+    .lote-detalle-body { padding: 0.75rem 1rem; }
+    .lote-detalle-fase { margin-bottom: 0.6rem; }
+    .lote-detalle-fase:last-child { margin-bottom: 0; }
+    .lote-detalle-fase-title {
+      color: #8b949e;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       main { grid-template-columns: 1fr; }
@@ -236,31 +431,60 @@
 
   <!-- ── PANEL IZQUIERDO ── -->
   <div class="panel-input">
-    <div class="panel-title">Instrucción operativa</div>
 
-    <textarea id="instruccion"
-      placeholder="Escribe una instrucción logística...&#10;&#10;Ej: DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta"
-      rows="5"></textarea>
-
-    <button class="btn-procesar" id="btn-procesar" onclick="procesar()">
-      ▶ PROCESAR INSTRUCCIÓN
-    </button>
-
-    <div class="ejemplos-title">Ejemplos de instrucciones</div>
-    <div class="ejemplos">
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta</button>
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">TRANSFERIR lote-01 DE almacen-A HACIA almacen-B</button>
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">VALIDAR stock producto-01 CANTIDAD 500</button>
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">CANCELAR pedido-005 MOTIVO dañado</button>
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">CONSULTAR pedido-010</button>
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPAXHAR pedido-001 DESTINO Lima PRIORIDAD alta</button>
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 Lima PRIORIDAD alta</button>
-      <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 DESTINO Marte PRIORIDAD alta</button>
+    <!-- Toggle de modo -->
+    <div class="modo-toggle">
+      <button class="toggle-btn active" id="btn-modo-individual" onclick="setModo('individual')">Individual</button>
+      <button class="toggle-btn"        id="btn-modo-lote"       onclick="setModo('lote')">Lote</button>
     </div>
+
+    <!-- Modo individual -->
+    <div id="modo-individual">
+      <div class="panel-title">Instrucción operativa</div>
+
+      <textarea id="instruccion"
+        placeholder="Escribe una instrucción logística...&#10;&#10;Ej: DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta"
+        rows="5"></textarea>
+
+      <button class="btn-procesar" id="btn-procesar" onclick="procesar()">
+        ▶ PROCESAR INSTRUCCIÓN
+      </button>
+
+      <div class="ejemplos-title">Ejemplos de instrucciones</div>
+      <div class="ejemplos">
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta</button>
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">TRANSFERIR lote-01 DE almacen-A HACIA almacen-B</button>
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">VALIDAR stock producto-01 CANTIDAD 500</button>
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">CANCELAR pedido-005 MOTIVO dañado</button>
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">CONSULTAR pedido-010</button>
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta</button>
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 Lima PRIORIDAD alta</button>
+        <button class="ejemplo-btn" onclick="cargarEjemplo(this)">DESPACHAR pedido-001 DESTINO Marte PRIORIDAD alta</button>
+      </div>
+      <!-- Historial de sesión -->
+      <div class="historial-section">
+        <div class="panel-title">Historial de sesión</div>
+        <div class="historial-list" id="historial-list">
+          <span class="historial-vacio">Sin instrucciones procesadas aún...</span>
+        </div>
+        <button class="btn-limpiar" id="btn-limpiar">Limpiar historial</button>
+      </div>
+    </div>
+
+    <!-- Modo lote -->
+    <div id="modo-lote" style="display:none">
+      <div class="panel-title">Instrucciones por lote</div>
+      <textarea id="instrucciones-lote" rows="10"
+        placeholder="Escribe una instrucción por línea...&#10;&#10;DESPACHAR pedido-001 DESTINO Lima PRIORIDAD alta&#10;TRANSFERIR lote-01 DE almacen-A HACIA almacen-B&#10;VALIDAR stock producto-01 CANTIDAD 500"></textarea>
+      <button class="btn-procesar" id="btn-procesar-lote" onclick="procesarLote()">
+        ▶ PROCESAR LOTE
+      </button>
+    </div>
+
   </div>
 
   <!-- ── PANEL DERECHO ── -->
-  <div class="panel-resultado">
+  <div class="panel-resultado" id="panel-individual">
 
     <div class="panel-title">Resultado del análisis</div>
 
@@ -273,6 +497,24 @@
       </div>
       <div class="fase-body" id="body-lexico">
         <span style="color:#484f58;font-size:0.8rem">Ingresa una instrucción para comenzar...</span>
+      </div>
+    </div>
+
+    <!-- Tabla de tokens -->
+    <div id="token-table-wrapper" class="token-table-wrapper" style="display:none">
+      <div class="panel-title" style="margin-bottom:0.5rem">Tabla de tokens</div>
+      <div class="fase-card">
+        <table class="token-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Token</th>
+              <th>Tipo</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="token-table-body"></tbody>
+        </table>
       </div>
     </div>
 
@@ -306,6 +548,33 @@
     </div>
 
   </div>
+
+  <!-- ── PANEL LOTE (resultado) ── -->
+  <div id="panel-lote" style="display:none">
+    <div class="panel-title">Resultado por lote</div>
+    <div id="lote-resumen-card" class="fase-card" style="display:none">
+      <div id="lote-stats" class="fase-header" style="font-size:0.8rem"></div>
+      <div style="overflow-x:auto">
+        <table class="lote-table">
+          <thead>
+            <tr><th>#</th><th>Instrucción</th><th>Estado</th></tr>
+          </thead>
+          <tbody id="lote-tabla-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="lote-detalle" style="display:none"></div>
+    <div id="lote-estado" class="resultado-final resultado-espera">
+      Escribe instrucciones y presiona PROCESAR LOTE
+    </div>
+  </div>
+
+  <!-- ── ÁRBOL SINTÁCTICO ── -->
+  <div id="arbol-wrapper" class="arbol-wrapper" style="display:none">
+    <div class="panel-title" style="margin-bottom:0.5rem">Árbol sintáctico</div>
+    <div class="arbol-svg-box" id="arbol-svg-container"></div>
+  </div>
+
 </main>
 
 <script>
@@ -348,6 +617,9 @@
     document.getElementById('body-lexico').innerHTML     = '<span class="loading">Analizando tokens...</span>';
     document.getElementById('body-sintactico').innerHTML = '<span style="color:#484f58;font-size:0.8rem">Esperando fase léxica...</span>';
     document.getElementById('body-semantico').innerHTML  = '<span style="color:#484f58;font-size:0.8rem">Esperando fases anteriores...</span>';
+    document.getElementById('token-table-wrapper').style.display = 'none';
+    document.getElementById('token-table-body').innerHTML = '';
+    document.getElementById('arbol-wrapper').style.display = 'none';
     document.getElementById('resultado-final').className = 'resultado-final resultado-espera';
     document.getElementById('resultado-final').textContent = 'Procesando...';
   }
@@ -369,6 +641,23 @@
           html += `<span class="token-chip t-${t.tipo}" title="${t.tipo}">${t.valor}</span>`;
         });
         html += '</div>';
+
+        // Poblar tabla de tokens
+        let rows = '';
+        l.tokens.forEach((t, i) => {
+          const estado = t.tipo === 'DESCONOCIDO' ? '❌' : '✅';
+          rows += `<tr class="tr-${t.tipo}">
+            <td>${i + 1}</td>
+            <td>${t.valor}</td>
+            <td>${t.tipo}</td>
+            <td>${estado}</td>
+          </tr>`;
+        });
+        document.getElementById('token-table-body').innerHTML = rows;
+        const wrapper = document.getElementById('token-table-wrapper');
+        wrapper.style.display = 'none';          // reset para reanimar
+        void wrapper.offsetWidth;                // fuerza reflow
+        wrapper.style.display = 'block';
       }
       if (l.errores && l.errores.length) {
         l.errores.forEach(e => { html += `<div class="error-msg">⚠ ${e}</div>`; });
@@ -427,6 +716,273 @@
       rf.className   = 'resultado-final resultado-error';
       rf.textContent = `❌ Instrucción rechazada — Error en fase ${data.fase_fallo}`;
     }
+
+    // ── ÁRBOL ──
+    if (data.valido && fases.lexico && fases.lexico.tokens && fases.lexico.tokens.length) {
+      renderTree(fases.lexico.tokens);
+    } else {
+      document.getElementById('arbol-wrapper').style.display = 'none';
+    }
+
+    // ── HISTORIAL ──
+    agregarAlHistorial(data);
+  }
+
+  // ── ÁRBOL SINTÁCTICO SVG ──
+  const TREE_COLORS = {
+    COMANDO:       { fill: '#1f3a5f', stroke: '#79c0ff', text: '#79c0ff' },
+    KEYWORD:       { fill: '#2d2a1e', stroke: '#e3b341', text: '#e3b341' },
+    IDENTIFICADOR: { fill: '#1c2d1e', stroke: '#56d364', text: '#56d364' },
+    VALOR:         { fill: '#1e2535', stroke: '#a5b4fc', text: '#a5b4fc' },
+    NIVEL:         { fill: '#2d1e2d', stroke: '#d2a8ff', text: '#d2a8ff' },
+    NUMERO:        { fill: '#2d1e1e', stroke: '#ffa657', text: '#ffa657' },
+  };
+  const NW = 120, NH = 36, HGAP = 20, VGAP = 60, PAD = 20;
+
+  function buildSyntaxTree(tokens) {
+    const root = { label: tokens[0].valor, tipo: tokens[0].tipo, children: [] };
+    let curKw = null;
+    for (let i = 1; i < tokens.length; i++) {
+      const t = tokens[i];
+      const node = { label: t.valor, tipo: t.tipo, children: [] };
+      if (t.tipo === 'KEYWORD') {
+        root.children.push(node);
+        curKw = node;
+      } else {
+        (curKw || root).children.push(node);
+      }
+    }
+    return root;
+  }
+
+  function treeSubW(node) {
+    if (!node.children.length) return NW;
+    const sum = node.children.reduce((acc, c) => acc + treeSubW(c), 0)
+              + HGAP * (node.children.length - 1);
+    return Math.max(sum, NW);
+  }
+
+  function treeLayout(node, x, y) {
+    node.cx = x + treeSubW(node) / 2;
+    node.cy = y + NH / 2;
+    let cx = x;
+    node.children.forEach(child => {
+      const w = treeSubW(child);
+      treeLayout(child, cx, y + NH + VGAP);
+      cx += w + HGAP;
+    });
+  }
+
+  function treeDepth(node) {
+    if (!node.children.length) return 1;
+    return 1 + Math.max(...node.children.map(treeDepth));
+  }
+
+  function collectSvgParts(node, lines, rects) {
+    node.children.forEach(child => {
+      lines.push(
+        `<line x1="${node.cx}" y1="${node.cy + NH / 2}" ` +
+        `x2="${child.cx}" y2="${child.cy - NH / 2}" ` +
+        `stroke="#30363d" stroke-width="1.5"/>`
+      );
+      collectSvgParts(child, lines, rects);
+    });
+    const c = TREE_COLORS[node.tipo] || { fill: '#21262d', stroke: '#8b949e', text: '#8b949e' };
+    const lbl = node.label.length > 14 ? node.label.slice(0, 13) + '…' : node.label;
+    rects.push(
+      `<rect x="${node.cx - NW / 2}" y="${node.cy - NH / 2}" width="${NW}" height="${NH}" rx="6" ` +
+        `fill="${c.fill}" stroke="${c.stroke}" stroke-width="1"/>` +
+      `<text x="${node.cx}" y="${node.cy + 4}" text-anchor="middle" ` +
+        `font-family="'Courier New',monospace" font-size="11" fill="${c.text}">${lbl}</text>`
+    );
+  }
+
+  function renderTree(tokens) {
+    const wrapper   = document.getElementById('arbol-wrapper');
+    const container = document.getElementById('arbol-svg-container');
+    const root = buildSyntaxTree(tokens);
+
+    treeLayout(root, PAD, PAD);
+    const totalW = treeSubW(root) + 2 * PAD;
+    const depth  = treeDepth(root);
+    const totalH = depth * NH + (depth - 1) * VGAP + 2 * PAD;
+
+    const lines = [], rects = [];
+    collectSvgParts(root, lines, rects);
+
+    container.innerHTML =
+      `<svg viewBox="0 0 ${totalW} ${totalH}" width="100%" style="display:block">` +
+      lines.join('') + rects.join('') +
+      `</svg>`;
+
+    wrapper.style.display = 'none';
+    void wrapper.offsetWidth;
+    wrapper.style.display = 'block';
+  }
+
+  // ── HISTORIAL ──
+  const MAX_HISTORIAL = 10;
+  let historialItems = [];
+
+  function agregarAlHistorial(data) {
+    const instruccion = data.instruccion || document.getElementById('instruccion').value.trim();
+    const hora = new Date().toLocaleTimeString('es-PE', {
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+    historialItems.unshift({ instruccion, valido: data.valido, faseFallo: data.fase_fallo || null, hora });
+    if (historialItems.length > MAX_HISTORIAL) historialItems.pop();
+    renderHistorial();
+  }
+
+  function renderHistorial() {
+    const list = document.getElementById('historial-list');
+    if (!historialItems.length) {
+      list.innerHTML = '<span class="historial-vacio">Sin instrucciones procesadas aún...</span>';
+      return;
+    }
+    list.innerHTML = historialItems.map(item => {
+      const truncated = item.instruccion.length > 40
+        ? item.instruccion.slice(0, 40) + '...'
+        : item.instruccion;
+      const icono = item.valido ? '✅' : '❌';
+      const fase  = (!item.valido && item.faseFallo) ? ` (${item.faseFallo})` : '';
+      const cls   = item.valido ? 'historial-ok' : 'historial-error';
+      const escaped = item.instruccion.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+      return `<div class="historial-item ${cls}" data-instruccion="${escaped}">` +
+        `<div class="historial-item-row">` +
+          `<span class="historial-item-text">${icono} ${truncated}${fase}</span>` +
+          `<span class="historial-item-hora">${item.hora}</span>` +
+        `</div></div>`;
+    }).join('');
+  }
+
+  function limpiarHistorial() {
+    historialItems = [];
+    renderHistorial();
+  }
+
+  // ── MODO PROCESAMIENTO ──
+  let modoActual = 'individual';
+
+  function setModo(modo) {
+    modoActual = modo;
+    const isLote = modo === 'lote';
+    document.getElementById('btn-modo-individual').classList.toggle('active', !isLote);
+    document.getElementById('btn-modo-lote').classList.toggle('active',  isLote);
+    document.getElementById('modo-individual').style.display  = isLote ? 'none' : 'flex';
+    document.getElementById('modo-lote').style.display        = isLote ? 'flex' : 'none';
+    document.getElementById('panel-individual').style.display = isLote ? 'none' : 'flex';
+    document.getElementById('panel-lote').style.display       = isLote ? 'flex' : 'none';
+    document.getElementById('arbol-wrapper').style.display    = 'none';
+  }
+
+  async function procesarLote() {
+    const texto = document.getElementById('instrucciones-lote').value.trim();
+    if (!texto) return;
+    const instrucciones = texto.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!instrucciones.length) return;
+
+    const btn = document.getElementById('btn-procesar-lote');
+    btn.disabled    = true;
+    btn.textContent = '⏳ Procesando...';
+
+    document.getElementById('lote-resumen-card').style.display = 'none';
+    document.getElementById('lote-detalle').style.display      = 'none';
+    const estado = document.getElementById('lote-estado');
+    estado.className   = 'resultado-final resultado-espera';
+    estado.textContent = 'Procesando lote...';
+    estado.style.display = 'block';
+
+    try {
+      const res  = await fetch('/procesar-lote', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ instrucciones })
+      });
+      const data = await res.json();
+      renderLoteResultado(data);
+    } catch(e) {
+      estado.className   = 'resultado-final resultado-error';
+      estado.textContent = '❌ Error de conexión';
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = '▶ PROCESAR LOTE';
+    }
+  }
+
+  function renderLoteResultado(data) {
+    const stats  = document.getElementById('lote-stats');
+    const tbody  = document.getElementById('lote-tabla-body');
+    const card   = document.getElementById('lote-resumen-card');
+    const estado = document.getElementById('lote-estado');
+
+    stats.innerHTML =
+      `<span style="color:#c9d1d9">${data.total} instrucciones</span>` +
+      `<span style="color:#484f58">·</span>` +
+      `<span style="color:#3fb950">✅ ${data.validas} válidas</span>` +
+      `<span style="color:#484f58">·</span>` +
+      `<span style="color:#f85149">❌ ${data.invalidas} inválidas</span>`;
+
+    tbody.innerHTML = data.resultados.map((r, i) => {
+      const truncado = r.instruccion.length > 45
+        ? r.instruccion.slice(0, 45) + '...'
+        : r.instruccion;
+      const badge = r.valido
+        ? `<span class="lote-badge lote-badge-valida">✅ VÁLIDA</span>`
+        : `<span class="lote-badge lote-badge-invalida">❌ ${r.fase_fallo || 'error'}</span>`;
+      const cls = r.valido ? 'lote-row lote-row-valida' : 'lote-row lote-row-invalida';
+      return `<tr class="${cls}" data-idx="${i}">` +
+        `<td>#${r.numero}</td><td>${truncado}</td><td>${badge}</td></tr>`;
+    }).join('');
+
+    tbody.querySelectorAll('.lote-row').forEach(row => {
+      row.addEventListener('click', () => mostrarDetalleLote(data.resultados[+row.dataset.idx]));
+    });
+
+    estado.style.display = 'none';
+    card.style.display   = 'block';
+  }
+
+  function mostrarDetalleLote(r) {
+    const detalle = document.getElementById('lote-detalle');
+    const fases   = r.fases || {};
+
+    let html = `<div class="lote-detalle-card">` +
+      `<div class="lote-detalle-header" style="color:${r.valido ? '#3fb950' : '#f85149'}">` +
+        `${r.valido ? '✅' : '❌'} ${r.instruccion}</div>` +
+      `<div class="lote-detalle-body">`;
+
+    if (fases.lexico) {
+      html += `<div class="lote-detalle-fase"><div class="lote-detalle-fase-title">Léxico</div>`;
+      if (fases.lexico.tokens && fases.lexico.tokens.length) {
+        html += `<div class="tokens-grid">`;
+        fases.lexico.tokens.forEach(t => {
+          html += `<span class="token-chip t-${t.tipo}" title="${t.tipo}">${t.valor}</span>`;
+        });
+        html += `</div>`;
+      }
+      (fases.lexico.errores || []).forEach(e => { html += `<div class="error-msg">⚠ ${e}</div>`; });
+      html += `</div>`;
+    }
+    if (fases.sintactico) {
+      html += `<div class="lote-detalle-fase"><div class="lote-detalle-fase-title">Sintáctico</div>`;
+      html += fases.sintactico.valido
+        ? `<span style="color:#3fb950;font-size:0.8rem">✓ Estructura gramatical correcta</span>`
+        : (fases.sintactico.errores || []).map(e => `<div class="error-msg">⚠ ${e}</div>`).join('');
+      html += `</div>`;
+    }
+    if (fases.semantico) {
+      html += `<div class="lote-detalle-fase"><div class="lote-detalle-fase-title">Semántico</div>`;
+      html += fases.semantico.valido
+        ? `<span style="color:#3fb950;font-size:0.8rem">✓ Significado lógicamente correcto</span>`
+        : (fases.semantico.errores || []).map(e => `<div class="error-msg">⚠ ${e}</div>`).join('');
+      html += `</div>`;
+    }
+
+    html += `</div></div>`;
+    detalle.innerHTML = html;
+    detalle.style.display = 'block';
+    detalle.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   // Enter para procesar
@@ -434,6 +990,13 @@
     document.getElementById('instruccion').addEventListener('keydown', e => {
       if (e.ctrlKey && e.key === 'Enter') procesar();
     });
+    document.getElementById('historial-list').addEventListener('click', e => {
+      const item = e.target.closest('.historial-item');
+      if (item && item.dataset.instruccion) {
+        document.getElementById('instruccion').value = item.dataset.instruccion;
+      }
+    });
+    document.getElementById('btn-limpiar').addEventListener('click', limpiarHistorial);
   });
 </script>
 
